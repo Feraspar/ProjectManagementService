@@ -27,7 +27,7 @@
 		/// <summary>
 		/// Project document name in storage.
 		/// </summary>
-		public string StoragedFileName { get; set; } = null!;
+		public string StoredFileName { get; set; } = null!;
 
 		/// <summary>
 		/// Project document type.
@@ -38,6 +38,11 @@
 		/// Project document size.
 		/// </summary>
 		public long Size { get; set; }
+
+		/// <summary>
+		/// Path to file.
+		/// </summary>
+		public string Path { get; set; } = null!;
 
 		/// <summary>
 		/// Project document uploaded time.
