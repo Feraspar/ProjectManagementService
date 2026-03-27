@@ -92,10 +92,10 @@
 
 				entity.Property(x => x.Name).IsRequired().HasMaxLength(200);
 
-				entity.Property(x => x.StartTime).IsRequired();
-				entity.HasIndex(x => x.StartTime);
+				entity.Property(x => x.StartDate).IsRequired();
+				entity.HasIndex(x => x.StartDate);
 
-				entity.Property(x => x.EndTime).IsRequired();
+				entity.Property(x => x.EndDate).IsRequired();
 
 				entity.Property(x => x.Priority).IsRequired();
 				entity.HasIndex(x => x.Priority);
