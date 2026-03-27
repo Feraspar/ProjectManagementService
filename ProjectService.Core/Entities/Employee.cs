@@ -39,6 +39,9 @@
 		/// </summary>
 		public ICollection<Project> ManagedProjects = new List<Project>();
 
+		/// <summary>
+		/// Project employees.
+		/// </summary>
 		public ICollection<ProjectEmployee> ProjectEmployees = new List<ProjectEmployee>();
 
 		#endregion Public Properties
