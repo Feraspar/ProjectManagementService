@@ -64,7 +64,7 @@
 		/// <inheritdoc />
 		public async Task<IReadOnlyCollection<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
 		{
-			return await _dbContext.Employees.AsNoTracking().OrderByDescending(x => x.LastName).ToListAsync(cancellationToken);
+			return await _dbContext.Employees.AsNoTracking().OrderBy(x => x.LastName).ToListAsync(cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -103,14 +103,14 @@
 				x.Email.ToLower().Contains(normilizedSearchTerm));
 			}
 
-			return await query.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ThenBy(x => x.MiddleName).Take(take).ToListAsync(cancellationToken);
+			return await query.OrderBy(x => x.LastName).Take(take).ToListAsync(cancellationToken);
 		}
 
 		/// <inheritdoc />
 		public async Task UpdateAsync(Employee employee, CancellationToken cancellationToken = default)
 		{
 			_dbContext.Employees.Update(employee);
-			await _dbContext.SaveChangesAsync();
+			await _dbContext.SaveChangesAsync(cancellationToken);
 		}
 
 		#endregion Public Methods

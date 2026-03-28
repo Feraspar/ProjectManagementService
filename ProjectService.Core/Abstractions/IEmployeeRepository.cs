@@ -42,7 +42,7 @@
 		/// <summary>
 		/// Get employee by id from database.
 		/// </summary>
-		/// <param name="id">Employee Id.</param>
+		/// <param name="employeeId">Employee Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task<Employee?> GetByIdAsync(Guid employeeId, CancellationToken cancellationToken = default);
 
