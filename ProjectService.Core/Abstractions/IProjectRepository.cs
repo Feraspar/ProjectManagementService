@@ -32,7 +32,6 @@
 		/// </summary>
 		/// <param name="project">Project.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task DeleteAsync(Project project, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -40,7 +39,6 @@
 		/// </summary>
 		/// <param name="projectId">Project Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task<bool> ExistsAsync(Guid projectId, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -48,7 +46,6 @@
 		/// </summary>
 		/// <param name="request">Request for filtering.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task<IReadOnlyCollection<Project>> GetAllAsync(FiltredProjectsRequest request, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -56,7 +53,6 @@
 		/// </summary>
 		/// <param name="projectId">Project Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task<Project?> GetByIdAsync(Guid projectId, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -64,7 +60,6 @@
 		/// </summary>
 		/// <param name="projectId">Project Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task<Project?> GetByIdWithDetailsAsync(Guid projectId, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -73,7 +68,6 @@
 		/// <param name="projectId">Project Id.</param>
 		/// <param name="employeeId">Employee Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task<bool> HasEmployeeAsync(Guid projectId, Guid employeeId, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -82,7 +76,6 @@
 		/// <param name="projectId">Project Id.</param>
 		/// <param name="employeeId">Employee Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task RemoveEmployeeAsync(Guid projectId, Guid employeeId, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -90,7 +83,6 @@
 		/// </summary>
 		/// <param name="project">Project.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
-		/// <returns></returns>
 		Task UpdateAsync(Project project, CancellationToken cancellationToken = default);
 
 		#endregion Public Methods

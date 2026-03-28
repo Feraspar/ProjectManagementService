@@ -43,7 +43,7 @@
 		/// <inheritdoc />
 		public async Task<Project> AddAsync(Project project, CancellationToken cancellationToken = default)
 		{
-			await _dbContext.Projects.AddAsync(project, cancellationToken);
+			_dbContext.Projects.Add(project);
 			await _dbContext.SaveChangesAsync(cancellationToken);
 
 			return project;
@@ -52,7 +52,7 @@
 		/// <inheritdoc />
 		public async Task AddEmployeeAsync(ProjectEmployee projectEmployee, CancellationToken cancellationToken = default)
 		{
-			await _dbContext.ProjectEmployees.AddAsync(projectEmployee, cancellationToken);
+			_dbContext.ProjectEmployees.Add(projectEmployee);
 			await _dbContext.SaveChangesAsync(cancellationToken);
 		}
 
