@@ -20,7 +20,7 @@
 		/// <summary>
 		/// Deletes an employee.
 		/// </summary>
-		/// <param name="employeeId">Employee identifier.</param>
+		/// <param name="employeeId">Employee Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task DeleteAsync(Guid employeeId, CancellationToken cancellationToken = default);
 
@@ -33,7 +33,7 @@
 		/// <summary>
 		/// Gets an employee by identifier.
 		/// </summary>
-		/// <param name="employeeId">Employee identifier.</param>
+		/// <param name="employeeId">Employee Id.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task<EmployeeListResponse> GetByIdAsync(Guid employeeId, CancellationToken cancellationToken = default);
 
@@ -48,7 +48,7 @@
 		/// <summary>
 		/// Updates an existing employee.
 		/// </summary>
-		/// <param name="employeeId">Employee identifier.</param>
+		/// <param name="employeeId">Employee Id.</param>
 		/// <param name="request">Employee update request.</param>
 		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task<EmployeeListResponse> UpdateAsync(Guid employeeId, UpdateEmployeeRequest request, CancellationToken cancellationToken = default);
