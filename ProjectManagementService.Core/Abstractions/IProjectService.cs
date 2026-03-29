@@ -18,35 +18,35 @@
 		/// </summary>
 		/// <param name="projectId">Project identifier.</param>
 		/// <param name="employeeId">Employee identifier.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task AddEmployeeAsync(Guid projectId, Guid employeeId, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Creates a new project.
 		/// </summary>
 		/// <param name="request">Project creation request.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task<ProjectDetailsResponse> CreateAsync(CreateProjectRequest request, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Deletes a project.
 		/// </summary>
 		/// <param name="projectId">Project identifier.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task DeleteAsync(Guid projectId, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Gets a filtered and sorted project list.
 		/// </summary>
 		/// <param name="request">Filtering and sorting request.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task<IReadOnlyCollection<ProjectListItemResponse>> GetAllAsync(FiltredProjectsRequest request, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Gets a project by identifier with full details.
 		/// </summary>
 		/// <param name="projectId">Project identifier.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task<ProjectDetailsResponse> GetByIdAsync(Guid projectId, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -54,7 +54,7 @@
 		/// </summary>
 		/// <param name="projectId">Project identifier.</param>
 		/// <param name="employeeId">Employee identifier.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task RemoveEmployeeAsync(Guid projectId, Guid employeeId, CancellationToken cancellationToken = default);
 
 		/// <summary>
@@ -62,7 +62,7 @@
 		/// </summary>
 		/// <param name="projectId">Project identifier.</param>
 		/// <param name="request">Project update request.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <param name="cancellationToken">Token to cancel the operation in progress.</param>
 		Task<ProjectDetailsResponse> UpdateAsync(Guid projectId, UpdateProjectRequest request, CancellationToken cancellationToken = default);
 
 		#endregion Public Methods
