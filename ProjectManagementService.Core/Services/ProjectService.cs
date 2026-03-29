@@ -225,19 +225,13 @@
 
 			await _projectRepository.UpdateAsync(existingProject, cancellationToken);
 
-			HashSet<Guid> currentEmployeeIds = existingProject.ProjectEmployees
-				.Select(x => x.EmployeeId)
-				.ToHashSet();
+			HashSet<Guid> currentEmployeeIds = existingProject.ProjectEmployees.Select(x => x.EmployeeId).ToHashSet();
 
 			HashSet<Guid> newEmployeeIds = requestedEmployeeIds.ToHashSet();
 
-			List<Guid> employeeIdsToAdd = newEmployeeIds
-				.Except(currentEmployeeIds)
-				.ToList();
+			List<Guid> employeeIdsToAdd = newEmployeeIds.Except(currentEmployeeIds).ToList();
 
-			List<Guid> employeeIdsToRemove = currentEmployeeIds
-				.Except(newEmployeeIds)
-				.ToList();
+			List<Guid> employeeIdsToRemove = currentEmployeeIds.Except(newEmployeeIds).ToList();
 
 			foreach (Guid employeeId in employeeIdsToAdd)
 			{

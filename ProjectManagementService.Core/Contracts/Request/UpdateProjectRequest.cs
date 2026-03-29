@@ -8,8 +8,8 @@
 	/// DTO for update project reqquest.
 	/// </summary>
 	/// <param name="Name">Project name.</param>
-	/// <param name="CustomerCompanyId">Customer company Id.</param>
-	/// <param name="ExecutorCompanyId">Executor company Id.</param>
+	/// <param name="CustomerCompanyName">Customer company name.</param>
+	/// <param name="ExecutorCompanyName">Executor company name.</param>
 	/// <param name="ProjectManagerId">Project manager Id.</param>
 	/// <param name="StartDate">Start date project.</param>
 	/// <param name="EndDate">End date project.</param>

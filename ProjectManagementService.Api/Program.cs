@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectManagementService.Core.Abstractions;
 using ProjectManagementService.Core.Services;
+using ProjectManagementService.Infrastructure.Files;
 using ProjectManagementService.Infrastructure.Persistence;
 using ProjectManagementService.Infrastructure.Repositories;
 
@@ -20,6 +21,11 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IProjectDocumentRepository, ProjectDocumentRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IProjectDocumentService, ProjectDocumentService>();
+
+string uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
+
+builder.Services.AddSingleton<IFileStorageService>(_ => new LocalFileStorageService(uploadsPath));
 
 var app = builder.Build();
 

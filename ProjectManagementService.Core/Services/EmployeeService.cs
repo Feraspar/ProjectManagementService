@@ -9,6 +9,9 @@
 	using System.Threading;
 	using System.Threading.Tasks;
 
+	/// <summary>
+	/// Service for employees business logic.
+	/// </summary>
 	public class EmployeeService : IEmployeeService
 	{
 		#region Private Fields
@@ -98,6 +101,7 @@
 			return employees.Select(MapToResponse).ToList();
 		}
 
+		/// <inheritdoc />
 		public async Task<EmployeeListResponse> UpdateAsync(Guid employeeId, UpdateEmployeeRequest request, CancellationToken cancellationToken = default)
 		{
 			ArgumentNullException.ThrowIfNull(request);
