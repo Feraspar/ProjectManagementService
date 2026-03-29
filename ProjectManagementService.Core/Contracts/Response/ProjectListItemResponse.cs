@@ -8,9 +8,9 @@
 	/// </summary>
 	/// <param name="Id">Project Id.</param>
 	/// <param name="Name">Project name.</param>
-	/// <param name="CustomerCompanyId">Customer company Id.</param>
-	/// <param name="ExecutorCompanyId">Executor company Id.</param>
-	/// <param name="ProjectManagerId">Project manager Id.</param>
+	/// <param name="CustomerCompanyName">Customer company name.</param>
+	/// <param name="ExecutorCompanyName">Executor company name.</param>
+	/// <param name="ProjectManagerFullName">Project manager full name.</param>
 	/// <param name="StartDate">Start date project.</param>
 	/// <param name="EndDate">End date project.</param>
 	/// <param name="Priority">Project prioritiy.</param>

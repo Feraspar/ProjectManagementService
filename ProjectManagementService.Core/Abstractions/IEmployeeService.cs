@@ -6,6 +6,9 @@
 	using System.Collections.Generic;
 	using System.Threading.Tasks;
 
+	/// <summary>
+	/// Interface for service for employees business logic.
+	/// </summary>
 	public interface IEmployeeService
 	{
 		#region Public Methods
