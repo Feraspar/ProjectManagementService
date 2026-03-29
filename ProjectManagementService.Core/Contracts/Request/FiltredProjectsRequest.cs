@@ -8,8 +8,6 @@
 	/// <param name="StartDateFrom">Lower bound of project start date.</param>
 	/// <param name="StartDateTo">Upper bound of project start date.</param>
 	/// <param name="Priorities">Project priorities for filtering.</param>
-	/// <param name="CustomerCompanyId">Customer company Id.</param>
-	/// <param name="ExecutorCompanyId">Executor company Id.</param>
 	/// <param name="ProjectManagerId">Project manager Id.</param>
 	/// <param name="SortBy">Sort field.</param>
 	/// <param name="SortDescending">Indicates whether sorting should be descending.</param>
@@ -21,9 +19,9 @@
 
 		IReadOnlyCollection<ProjectPriority>? Priorities,
 
-		Guid? CustomerCompanyId,
+		string? CustomerCompanyName = null,
 
-		Guid? ExecutorCompanyId,
+		string? ExecutorCompanyName = null,
 
 		Guid? ProjectManagerId,
 

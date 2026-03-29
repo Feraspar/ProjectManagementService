@@ -126,20 +126,6 @@
 		#region Private Methods
 
 		/// <summary>
-		/// Builds a full name string.
-		/// </summary>
-		/// <param name="lastName">Last name.</param>
-		/// <param name="firstName">First name.</param>
-		/// <param name="middleName">Middle name.</param>
-		private static string BuildFullName(string lastName, string firstName, string? middleName)
-		{
-			return string.Join(
-				' ',
-				new[] { lastName, firstName, middleName }
-					.Where(x => !string.IsNullOrWhiteSpace(x)));
-		}
-
-		/// <summary>
 		/// Maps an employee entity to response DTO.
 		/// </summary>
 		/// <param name="employee">Employee entity.</param>
@@ -151,7 +137,7 @@
 				employee.LastName,
 				employee.MiddleName,
 				employee.Email,
-				BuildFullName(employee.LastName, employee.FirstName, employee.MiddleName));
+				$"{employee.LastName} {employee.FirstName} {employee.MiddleName}".Trim());
 		}
 
 		/// <summary>
