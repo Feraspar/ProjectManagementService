@@ -72,7 +72,7 @@
 		/// <inheritdoc />
 		public async Task<IReadOnlyCollection<Project>> GetAllAsync(FiltredProjectsRequest request, CancellationToken cancellationToken = default)
 		{
-			IQueryable<Project> query = _dbContext.Projects.AsNoTracking().Include(x => x.CustomerCompany).Include(x => x.ExecutorCompany).Include(x => x.ProjectManager);
+			IQueryable<Project> query = _dbContext.Projects.AsNoTracking().Include(x => x.ProjectManager);
 
 			if (request.StartDateFrom.HasValue)
 			{
@@ -84,19 +84,23 @@
 				query = query.Where(x => x.StartDate <= request.StartDateTo.Value);
 			}
 
+			if (!string.IsNullOrWhiteSpace(request.CustomerCompanyName))
+			{
+				string normalizedCustomerCompanyName = request.CustomerCompanyName.Trim().ToLower();
+
+				query = query.Where(x => x.CustomerCompanyName.ToLower().Contains(normalizedCustomerCompanyName));
+			}
+
+			if (!string.IsNullOrWhiteSpace(request.ExecutorCompanyName))
+			{
+				string normalizedExecutorCompanyName = request.ExecutorCompanyName.Trim().ToLower();
+
+				query = query.Where(x => x.ExecutorCompanyName.ToLower().Contains(normalizedExecutorCompanyName));
+			}
+
 			if (request.Priorities is not null && request.Priorities.Any())
 			{
 				query = query.Where(x => request.Priorities.Contains(x.Priority));
-			}
-
-			if (request.CustomerCompanyId.HasValue)
-			{
-				query = query.Where(x => x.CustomerCompanyId == request.CustomerCompanyId.Value);
-			}
-
-			if (request.ExecutorCompanyId.HasValue)
-			{
-				query = query.Where(x => x.ExecutorCompanyId == request.ExecutorCompanyId.Value);
 			}
 
 			if (request.ProjectManagerId.HasValue)
@@ -119,8 +123,6 @@
 		public async Task<Project?> GetByIdWithDetailsAsync(Guid projectId, CancellationToken cancellationToken = default)
 		{
 			return await _dbContext.Projects.AsNoTracking()
-				.Include(x => x.CustomerCompany)
-				.Include(x => x.ExecutorCompany)
 				.Include(x => x.ProjectManager)
 				.Include(x => x.Documents)
 				.Include(x => x.ProjectEmployees).ThenInclude(x => x.Employee)
@@ -182,13 +184,13 @@
 					? query.OrderByDescending(x => x.Priority)
 					: query.OrderBy(x => x.Priority),
 
-				"customercompany" => sortDescending
-					? query.OrderByDescending(x => x.CustomerCompany.Name)
-					: query.OrderBy(x => x.CustomerCompany.Name),
+				"customercompanyname" => sortDescending
+				? query.OrderByDescending(x => x.CustomerCompanyName)
+				: query.OrderBy(x => x.CustomerCompanyName),
 
-				"executorcompany" => sortDescending
-					? query.OrderByDescending(x => x.ExecutorCompany.Name)
-					: query.OrderBy(x => x.ExecutorCompany.Name),
+				"executorcompanyname" => sortDescending
+					? query.OrderByDescending(x => x.ExecutorCompanyName)
+					: query.OrderBy(x => x.ExecutorCompanyName),
 
 				"projectmanager" => sortDescending
 					? query.OrderByDescending(x => x.ProjectManager.LastName).ThenByDescending(x => x.ProjectManager.FirstName)

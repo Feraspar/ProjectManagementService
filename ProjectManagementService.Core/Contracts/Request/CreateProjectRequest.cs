@@ -17,9 +17,9 @@
 
 		string Name,
 
-		Guid CustomerCompanyId,
+		string CustomerCompanyName,
 
-		Guid ExecutorCompanyId,
+		string ExecutorCompanyName,
 
 		Guid ProjectManagerId,
 

@@ -21,14 +21,14 @@
 		public string Name { get; set; } = null!;
 
 		/// <summary>
-		/// Customer company Id.
+		/// Customer company name.
 		/// </summary>
-		public Guid CustomerCompanyId { get; set; }
+		public string CustomerCompanyName { get; set; } = null!;
 
 		/// <summary>
-		/// Executor company Id.
+		/// Executor company name.
 		/// </summary>
-		public Guid ExecutorCompanyId { get; set; }
+		public string ExecutorCompanyName { get; set; } = null!;
 
 		/// <summary>
 		/// Project manager Id.
@@ -54,16 +54,6 @@
 		/// Project manager.
 		/// </summary>
 		public Employee ProjectManager { get; set; } = null!;
-
-		/// <summary>
-		/// Customer company.
-		/// </summary>
-		public Company CustomerCompany { get; set; } = null!;
-
-		/// <summary>
-		/// Executor company.
-		/// </summary>
-		public Company ExecutorCompany { get; set; } = null!;
 
 		/// <summary>
 		/// Project employees.

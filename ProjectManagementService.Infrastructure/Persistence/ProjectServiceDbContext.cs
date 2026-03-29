@@ -11,11 +11,6 @@
 		#region Public Properties
 
 		/// <summary>
-		/// Table for companies.
-		/// </summary>
-		public DbSet<Company> Companies => Set<Company>();
-
-		/// <summary>
 		/// Table for employees.
 		/// </summary>
 		public DbSet<Employee> Employees => Set<Employee>();
@@ -59,15 +54,6 @@
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<Company>(entity =>
-			{
-				entity.ToTable("companies");
-
-				entity.HasKey(x => x.Id);
-
-				entity.Property(x => x.Name).IsRequired().HasMaxLength(200);
-			});
-
 			modelBuilder.Entity<Employee>(entity =>
 			{
 				entity.ToTable("employees");
@@ -92,6 +78,10 @@
 
 				entity.Property(x => x.Name).IsRequired().HasMaxLength(200);
 
+				entity.Property(x => x.CustomerCompanyName).IsRequired().HasMaxLength(200);
+
+				entity.Property(x => x.ExecutorCompanyName).IsRequired().HasMaxLength(200);
+
 				entity.Property(x => x.StartDate).IsRequired();
 				entity.HasIndex(x => x.StartDate);
 
@@ -102,12 +92,6 @@
 
 				entity.HasOne(x => x.ProjectManager).WithMany(x => x.ManagedProjects).HasForeignKey(x => x.ProjectManagerId).OnDelete(DeleteBehavior.Restrict);
 				entity.HasIndex(x => x.ProjectManagerId);
-
-				entity.HasOne(x => x.CustomerCompany).WithMany(x => x.CustomerProjects).HasForeignKey(x => x.CustomerCompanyId).OnDelete(DeleteBehavior.Restrict);
-				entity.HasIndex(x => x.CustomerCompanyId);
-
-				entity.HasOne(x => x.ExecutorCompany).WithMany(x => x.ExecutorProjects).HasForeignKey(x => x.ExecutorCompanyId).OnDelete(DeleteBehavior.Restrict);
-				entity.HasIndex(x => x.ExecutorCompanyId);
 			});
 
 			modelBuilder.Entity<ProjectEmployee>(entity =>

@@ -17,11 +17,6 @@
 		#region Private Fields
 
 		/// <summary>
-		/// Company repository.
-		/// </summary>
-		private readonly ICompanyRepository _companyRepository;
-
-		/// <summary>
 		/// Employee repository.
 		/// </summary>
 		private readonly IEmployeeRepository _employeeRepository;
@@ -40,12 +35,10 @@
 		/// </summary>
 		/// <param name="projectRepository">Project repository.</param>
 		/// <param name="employeeRepository">Employee repository.</param>
-		/// <param name="companyRepository">Company repository.</param>
-		public ProjectService(IProjectRepository projectRepository, IEmployeeRepository employeeRepository, ICompanyRepository companyRepository)
+		public ProjectService(IProjectRepository projectRepository, IEmployeeRepository employeeRepository)
 		{
 			_projectRepository = projectRepository;
 			_employeeRepository = employeeRepository;
-			_companyRepository = companyRepository;
 		}
 
 		#endregion Public Constructors
@@ -91,7 +84,15 @@
 		{
 			ArgumentNullException.ThrowIfNull(request);
 
-			await ValidateProjectRequestAsync(request.Name, request.CustomerCompanyId, request.ExecutorCompanyId, request.ProjectManagerId, request.StartDate, request.EndDate, request.EmployeeIds, cancellationToken);
+			await ValidateProjectRequestAsync(
+				request.Name, 
+				request.CustomerCompanyName, 
+				request.ExecutorCompanyName, 
+				request.ProjectManagerId, 
+				request.StartDate, 
+				request.EndDate, 
+				request.EmployeeIds, 
+				cancellationToken);
 
 			List<Guid> employeeIds = NormalizeEmployeeIds(request.EmployeeIds, request.ProjectManagerId);
 
@@ -99,8 +100,8 @@
 			{
 				Id = Guid.NewGuid(),
 				Name = request.Name.Trim(),
-				CustomerCompanyId = request.CustomerCompanyId,
-				ExecutorCompanyId = request.ExecutorCompanyId,
+				CustomerCompanyName = request.CustomerCompanyName,
+				ExecutorCompanyName = request.ExecutorCompanyName,
 				ProjectManagerId = request.ProjectManagerId,
 				StartDate = request.StartDate,
 				EndDate = request.EndDate,
@@ -145,7 +146,7 @@
 		}
 
 		/// <inheritdoc />
-		public async Task<IReadOnlyCollection<ProjectListItemResponse>> GetAllAsync(Contracts.Request.FiltredProjectsRequest request, CancellationToken cancellationToken = default)
+		public async Task<IReadOnlyCollection<ProjectListItemResponse>> GetAllAsync(FiltredProjectsRequest request, CancellationToken cancellationToken = default)
 		{
 			IReadOnlyCollection<Project> projects = await _projectRepository.GetAllAsync(request, cancellationToken);
 
@@ -204,8 +205,8 @@
 
 			await ValidateProjectRequestAsync(
 				request.Name,
-				request.CustomerCompanyId,
-				request.ExecutorCompanyId,
+				request.CustomerCompanyName,
+				request.ExecutorCompanyName,
 				request.ProjectManagerId,
 				request.StartDate,
 				request.EndDate,
@@ -215,8 +216,8 @@
 			List<Guid> requestedEmployeeIds = NormalizeEmployeeIds(request.EmployeeIds, request.ProjectManagerId);
 
 			existingProject.Name = request.Name.Trim();
-			existingProject.CustomerCompanyId = request.CustomerCompanyId;
-			existingProject.ExecutorCompanyId = request.ExecutorCompanyId;
+			existingProject.CustomerCompanyName = request.CustomerCompanyName;
+			existingProject.ExecutorCompanyName = request.ExecutorCompanyName;
 			existingProject.ProjectManagerId = request.ProjectManagerId;
 			existingProject.StartDate = request.StartDate;
 			existingProject.EndDate = request.EndDate;
@@ -298,10 +299,8 @@
 			return new ProjectDetailsResponse(
 				project.Id,
 				project.Name,
-				project.CustomerCompanyId,
-				project.CustomerCompany.Name,
-				project.ExecutorCompanyId,
-				project.ExecutorCompany.Name,
+				project.CustomerCompanyName,
+				project.ExecutorCompanyName,
 				project.ProjectManagerId,
 				$"{project.ProjectManager.LastName} {project.ProjectManager.FirstName} {project.ProjectManager.MiddleName}".Trim(),
 				project.StartDate,
@@ -321,8 +320,8 @@
 			return new ProjectListItemResponse(
 				project.Id,
 				project.Name,
-				project.CustomerCompany.Name,
-				project.ExecutorCompany.Name,
+				project.CustomerCompanyName,
+				project.ExecutorCompanyName,
 				$"{project.ProjectManager.LastName} {project.ProjectManager.FirstName} {project.ProjectManager.MiddleName}".Trim(),
 				project.StartDate,
 				project.EndDate,
@@ -354,7 +353,7 @@
 		/// <param name="endTime">Project end time.</param>
 		/// <param name="employeeIds">Employee identifiers.</param>
 		/// <param name="cancellationToken">Cancellation token.</param>
-		private async Task ValidateProjectRequestAsync(string name, Guid customerCompanyId, Guid executorCompanyId, Guid projectManagerId, DateTimeOffset startTime, DateTimeOffset endTime, IReadOnlyCollection<Guid> employeeIds, CancellationToken cancellationToken)
+		private async Task ValidateProjectRequestAsync(string name, string customerCompanyName, string executorCompanyName, Guid projectManagerId, DateTimeOffset startTime, DateTimeOffset endTime, IReadOnlyCollection<Guid> employeeIds, CancellationToken cancellationToken)
 		{
 			if (string.IsNullOrWhiteSpace(name))
 			{
@@ -366,16 +365,14 @@
 				throw new ArgumentException("Project start time cannot be greater than end time.");
 			}
 
-			bool customerCompanyExists = await _companyRepository.ExistsAsync(customerCompanyId, cancellationToken);
-			if (!customerCompanyExists)
+			if (string.IsNullOrWhiteSpace(customerCompanyName))
 			{
-				throw new KeyNotFoundException($"Customer company with id '{customerCompanyId}' was not found.");
+				throw new ArgumentException("Customer company name is required.");
 			}
 
-			bool executorCompanyExists = await _companyRepository.ExistsAsync(executorCompanyId, cancellationToken);
-			if (!executorCompanyExists)
+			if (string.IsNullOrWhiteSpace(executorCompanyName))
 			{
-				throw new KeyNotFoundException($"Executor company with id '{executorCompanyId}' was not found.");
+				throw new ArgumentException("Executor company name is required.");
 			}
 
 			bool projectManagerExists = await _employeeRepository.ExistsAsync(projectManagerId, cancellationToken);
