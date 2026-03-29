@@ -17,7 +17,7 @@
 	/// <param name="ProjectManagerFullName">Project manager name.</param>
 	/// <param name="StartDate">Start date project.</param>
 	/// <param name="EndDate">End date project.</param>
-	/// <param name="Prioritiy">Project prioritiy.</param>
+	/// <param name="Priority">Project prioritiy.</param>
 	/// <param name="Employees">Collection of employees on project.</param>
 	/// <param name="Documents">Collection of documents in project.</param>
 	public record ProjectDetailsResponse(

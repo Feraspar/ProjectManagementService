@@ -13,7 +13,7 @@
 	/// <param name="ProjectManagerId">Project manager Id.</param>
 	/// <param name="StartDate">Start date project.</param>
 	/// <param name="EndDate">End date project.</param>
-	/// <param name="Prioritiy">Project prioritiy.</param>
+	/// <param name="Priority">Project prioritiy.</param>
 	public record ProjectListItemResponse(
 
 		Guid Id,
