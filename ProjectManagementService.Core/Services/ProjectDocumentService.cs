@@ -27,6 +27,8 @@
 		/// </summary>
 		private readonly IProjectRepository _projectRepository;
 
+		private readonly IFileStorageService _fileStorageService;
+
 		#endregion Private Fields
 
 		#region Public Constructors
@@ -36,46 +38,16 @@
 		/// </summary>
 		/// <param name="projectDocumentRepository">Project document repository.</param>
 		/// <param name="projectRepository">Project repository.</param>
-		public ProjectDocumentService(IProjectDocumentRepository projectDocumentRepository, IProjectRepository projectRepository)
+		public ProjectDocumentService(IProjectDocumentRepository projectDocumentRepository, IProjectRepository projectRepository, IFileStorageService fileStorageService)
 		{
 			_projectDocumentRepository = projectDocumentRepository;
 			_projectRepository = projectRepository;
+			_fileStorageService = fileStorageService;
 		}
 
 		#endregion Public Constructors
 
 		#region Public Methods
-
-		/// <inheritdoc />
-		public async Task<ProjectDocumentResponse> AddAsync(UploadProjectDocumentRequest request, CancellationToken cancellationToken = default)
-		{
-			ArgumentNullException.ThrowIfNull(request);
-
-			bool projectExists = await _projectRepository.ExistsAsync(request.ProjectId, cancellationToken);
-
-			if (!projectExists)
-			{
-				throw new KeyNotFoundException($"Project with id '{request.ProjectId}' was not found.");
-			}
-
-			ValidateUploadRequest(request);
-
-			ProjectDocument document = new()
-			{
-				Id = Guid.NewGuid(),
-				ProjectId = request.ProjectId,
-				FileName = request.FileName.Trim(),
-				StoredFileName = request.StoredFileName.Trim(),
-				ContentType = request.ContentType.Trim(),
-				Size = request.Size,
-				Path = request.Path.Trim(),
-				UploadedAt = DateTimeOffset.UtcNow
-			};
-
-			ProjectDocument createdDocument = await _projectDocumentRepository.AddAsync(document, cancellationToken);
-
-			return MapToResponse(createdDocument);
-		}
 
 		/// <inheritdoc />
 		public async Task DeleteAsync(Guid documentId, CancellationToken cancellationToken = default)
@@ -87,6 +59,7 @@
 				throw new KeyNotFoundException($"Project document with id '{documentId}' was not found.");
 			}
 
+			await _fileStorageService.DeleteFileAsync(document.Path, cancellationToken);
 			await _projectDocumentRepository.DeleteAsync(document, cancellationToken);
 		}
 
@@ -101,6 +74,39 @@
 			}
 
 			return MapToResponse(document);
+		}
+
+		/// <inheritdoc />
+		public async Task<ProjectDocumentResponse> UploadAsync(UploadProjectDocumentRequest request, CancellationToken cancellationToken = default)
+		{
+			ArgumentNullException.ThrowIfNull(request);
+
+			bool projectExists = await _projectRepository.ExistsAsync(request.ProjectId, cancellationToken);
+
+			if (!projectExists)
+			{
+				throw new KeyNotFoundException($"Project with id '{request.ProjectId}' was not found.");
+			}
+
+			ValidateUploadRequest(request);
+
+			SavedFileResponse savedFile = await _fileStorageService.SaveFileAsync(new SaveFileRequest(request.ProjectId, request.FileName, request.ContentType, request.Content), cancellationToken);
+
+			ProjectDocument document = new()
+			{
+				Id = Guid.NewGuid(),
+				ProjectId = request.ProjectId,
+				FileName = savedFile.FileName,
+				StoredFileName = savedFile.StoredFileName,
+				ContentType = savedFile.ContentType,
+				Size = savedFile.Size,
+				Path = savedFile.Path,
+				UploadedAt = DateTimeOffset.UtcNow
+			};
+
+			ProjectDocument createdDocument = await _projectDocumentRepository.AddAsync(document, cancellationToken);
+
+			return MapToResponse(createdDocument);
 		}
 
 		/// <inheritdoc />
@@ -147,24 +153,19 @@
 				throw new ArgumentException("File name is required.");
 			}
 
-			if (string.IsNullOrWhiteSpace(request.StoredFileName))
-			{
-				throw new ArgumentException("Stored file name is required.");
-			}
-
 			if (string.IsNullOrWhiteSpace(request.ContentType))
 			{
 				throw new ArgumentException("Content type is required.");
 			}
 
-			if (string.IsNullOrWhiteSpace(request.Path))
+			if (request.Content is null)
 			{
-				throw new ArgumentException("File path is required.");
+				throw new ArgumentException("File content is required.");
 			}
 
-			if (request.Size <= 0)
+			if (!request.Content.CanRead)
 			{
-				throw new ArgumentException("File size must be greater than zero.");
+				throw new ArgumentException("File content stream must be readable.");
 			}
 		}
 

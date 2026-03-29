@@ -14,13 +14,6 @@
 		#region Public Methods
 
 		/// <summary>
-		/// Adds a new project document.
-		/// </summary>
-		/// <param name="request">Document upload request.</param>
-		/// <param name="cancellationToken">Cancellation token.</param>
-		Task<ProjectDocumentResponse> AddAsync(UploadProjectDocumentRequest request, CancellationToken cancellationToken = default);
-
-		/// <summary>
 		/// Deletes a project document.
 		/// </summary>
 		/// <param name="documentId">Document identifier.</param>
@@ -40,6 +33,14 @@
 		/// <param name="projectId">Project identifier.</param>
 		/// <param name="cancellationToken">Cancellation token.</param>
 		Task<IReadOnlyCollection<ProjectDocumentResponse>> GetByProjectIdAsync(Guid projectId, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Uploads a new project document.
+		/// </summary>
+		/// <param name="request">Document upload request.</param>
+		/// <param name="cancellationToken">Cancellation token.</param>
+		/// <returns>Created project document response.</returns>
+		Task<ProjectDocumentResponse> UploadAsync(UploadProjectDocumentRequest request, CancellationToken cancellationToken = default);
 
 		#endregion Public Methods
 	}
