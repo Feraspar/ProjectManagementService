@@ -17,23 +17,7 @@ namespace ProjectManagementService.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.12");
 
-            modelBuilder.Entity("ProjectService.Core.Entities.Company", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("companies", (string)null);
-                });
-
-            modelBuilder.Entity("ProjectService.Core.Entities.Employee", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.Employee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,19 +50,23 @@ namespace ProjectManagementService.Infrastructure.Migrations
                     b.ToTable("employees", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.Project", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.Project", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CustomerCompanyId")
+                    b.Property<string>("CustomerCompanyName")
+                        .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ExecutorCompanyId")
+                    b.Property<string>("ExecutorCompanyName")
+                        .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -97,10 +85,6 @@ namespace ProjectManagementService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerCompanyId");
-
-                    b.HasIndex("ExecutorCompanyId");
-
                     b.HasIndex("Priority");
 
                     b.HasIndex("ProjectManagerId");
@@ -110,7 +94,7 @@ namespace ProjectManagementService.Infrastructure.Migrations
                     b.ToTable("projects", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.ProjectDocument", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.ProjectDocument", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +136,7 @@ namespace ProjectManagementService.Infrastructure.Migrations
                     b.ToTable("project_documents", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.ProjectEmployee", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.ProjectEmployee", b =>
                 {
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("TEXT");
@@ -170,36 +154,20 @@ namespace ProjectManagementService.Infrastructure.Migrations
                     b.ToTable("project_employees", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.Project", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.Project", b =>
                 {
-                    b.HasOne("ProjectService.Core.Entities.Company", "CustomerCompany")
-                        .WithMany("CustomerProjects")
-                        .HasForeignKey("CustomerCompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjectService.Core.Entities.Company", "ExecutorCompany")
-                        .WithMany("ExecutorProjects")
-                        .HasForeignKey("ExecutorCompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjectService.Core.Entities.Employee", "ProjectManager")
+                    b.HasOne("ProjectManagementService.Core.Entities.Employee", "ProjectManager")
                         .WithMany("ManagedProjects")
                         .HasForeignKey("ProjectManagerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("CustomerCompany");
-
-                    b.Navigation("ExecutorCompany");
-
                     b.Navigation("ProjectManager");
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.ProjectDocument", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.ProjectDocument", b =>
                 {
-                    b.HasOne("ProjectService.Core.Entities.Project", "Project")
+                    b.HasOne("ProjectManagementService.Core.Entities.Project", "Project")
                         .WithMany("Documents")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -208,15 +176,15 @@ namespace ProjectManagementService.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.ProjectEmployee", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.ProjectEmployee", b =>
                 {
-                    b.HasOne("ProjectService.Core.Entities.Employee", "Employee")
+                    b.HasOne("ProjectManagementService.Core.Entities.Employee", "Employee")
                         .WithMany("ProjectEmployees")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProjectService.Core.Entities.Project", "Project")
+                    b.HasOne("ProjectManagementService.Core.Entities.Project", "Project")
                         .WithMany("ProjectEmployees")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -227,21 +195,14 @@ namespace ProjectManagementService.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.Company", b =>
-                {
-                    b.Navigation("CustomerProjects");
-
-                    b.Navigation("ExecutorProjects");
-                });
-
-            modelBuilder.Entity("ProjectService.Core.Entities.Employee", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.Employee", b =>
                 {
                     b.Navigation("ManagedProjects");
 
                     b.Navigation("ProjectEmployees");
                 });
 
-            modelBuilder.Entity("ProjectService.Core.Entities.Project", b =>
+            modelBuilder.Entity("ProjectManagementService.Core.Entities.Project", b =>
                 {
                     b.Navigation("Documents");
 

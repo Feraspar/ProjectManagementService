@@ -146,7 +146,7 @@
 		}
 
 		/// <inheritdoc />
-		public async Task<IReadOnlyCollection<ProjectListItemResponse>> GetAllAsync(Contracts.Request.FiltredProjectsRequest request, CancellationToken cancellationToken = default)
+		public async Task<IReadOnlyCollection<ProjectListItemResponse>> GetAllAsync(FiltredProjectsRequest request, CancellationToken cancellationToken = default)
 		{
 			IReadOnlyCollection<Project> projects = await _projectRepository.GetAllAsync(request, cancellationToken);
 

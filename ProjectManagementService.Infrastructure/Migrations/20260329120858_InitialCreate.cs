@@ -12,18 +12,6 @@ namespace ProjectManagementService.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "companies",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_companies", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "employees",
                 columns: table => new
                 {
@@ -44,8 +32,8 @@ namespace ProjectManagementService.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    CustomerCompanyId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ExecutorCompanyId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CustomerCompanyName = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    ExecutorCompanyName = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     ProjectManagerId = table.Column<Guid>(type: "TEXT", nullable: false),
                     StartDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     EndDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
@@ -54,18 +42,6 @@ namespace ProjectManagementService.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_projects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_projects_companies_CustomerCompanyId",
-                        column: x => x.CustomerCompanyId,
-                        principalTable: "companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_projects_companies_ExecutorCompanyId",
-                        column: x => x.ExecutorCompanyId,
-                        principalTable: "companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_projects_employees_ProjectManagerId",
                         column: x => x.ProjectManagerId,
@@ -140,16 +116,6 @@ namespace ProjectManagementService.Infrastructure.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_projects_CustomerCompanyId",
-                table: "projects",
-                column: "CustomerCompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_projects_ExecutorCompanyId",
-                table: "projects",
-                column: "ExecutorCompanyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_projects_Priority",
                 table: "projects",
                 column: "Priority");
@@ -176,9 +142,6 @@ namespace ProjectManagementService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "projects");
-
-            migrationBuilder.DropTable(
-                name: "companies");
 
             migrationBuilder.DropTable(
                 name: "employees");
