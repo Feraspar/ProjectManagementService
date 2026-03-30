@@ -20,6 +20,6 @@
 
 		long Size,
 
-		DateTimeOffset UploadedAt
+		DateTime UploadedAt
 	);
 }

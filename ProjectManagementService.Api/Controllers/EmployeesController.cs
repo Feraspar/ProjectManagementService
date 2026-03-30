@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProjectManagementService.Core.Abstractions;
-using ProjectManagementService.Core.Contracts.Request;
-
-namespace ProjectManagementService.Api.Controllers
+﻿namespace ProjectManagementService.Api.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+	using ProjectManagementService.Core.Abstractions;
+	using ProjectManagementService.Core.Contracts.Request;
+
 	[ApiController]
 	[Route("api/[controller]")]
 	public class EmployeesController : ControllerBase
@@ -26,9 +26,7 @@ namespace ProjectManagementService.Api.Controllers
 		#region Public Methods
 
 		[HttpPost]
-		public async Task<IActionResult> Create(
-		[FromBody] CreateEmployeeRequest request,
-		CancellationToken cancellationToken)
+		public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest request, CancellationToken cancellationToken)
 		{
 			var employee = await _employeeService.CreateAsync(request, cancellationToken);
 			return CreatedAtAction(nameof(GetById), new { employeeId = employee.Id }, employee);
@@ -68,10 +66,7 @@ namespace ProjectManagementService.Api.Controllers
 		}
 
 		[HttpPut("{employeeId:guid}")]
-		public async Task<IActionResult> Update(
-			Guid employeeId,
-			[FromBody] UpdateEmployeeRequest request,
-			CancellationToken cancellationToken)
+		public async Task<IActionResult> Update(Guid employeeId, [FromBody] UpdateEmployeeRequest request, CancellationToken cancellationToken)
 		{
 			var employee = await _employeeService.UpdateAsync(employeeId, request, cancellationToken);
 			return Ok(employee);

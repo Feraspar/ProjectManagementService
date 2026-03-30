@@ -47,7 +47,7 @@
 		/// <summary>
 		/// Project document uploaded time.
 		/// </summary>
-		public DateTimeOffset UploadedAt { get; set; }
+		public DateTime UploadedAt { get; set; }
 
 		/// <summary>
 		/// Project to which the document relates.
