@@ -104,7 +104,7 @@
 				ContentType = savedFile.ContentType,
 				Size = savedFile.Size,
 				Path = savedFile.Path,
-				UploadedAt = DateTimeOffset.UtcNow
+				UploadedAt = DateTime.UtcNow
 			};
 
 			ProjectDocument createdDocument = await _projectDocumentRepository.AddAsync(document, cancellationToken);

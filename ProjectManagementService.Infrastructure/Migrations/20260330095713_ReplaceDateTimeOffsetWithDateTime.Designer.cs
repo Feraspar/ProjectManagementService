@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectManagementService.Infrastructure.Persistence;
 
@@ -10,9 +11,11 @@ using ProjectManagementService.Infrastructure.Persistence;
 namespace ProjectManagementService.Infrastructure.Migrations
 {
     [DbContext(typeof(ProjectServiceDbContext))]
-    partial class ProjectServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260330095713_ReplaceDateTimeOffsetWithDateTime")]
+    partial class ReplaceDateTimeOffsetWithDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.12");
