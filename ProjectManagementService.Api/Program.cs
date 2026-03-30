@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ProjectManagementService.Api.Middleware;
 using ProjectManagementService.Core.Abstractions;
 using ProjectManagementService.Core.Services;
 using ProjectManagementService.Infrastructure.Files;
@@ -37,6 +38,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseGlobalExceptionHandling();
 
 app.UseAuthorization();
 
