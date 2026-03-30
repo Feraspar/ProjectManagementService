@@ -7,6 +7,9 @@
 	using System.Threading;
 	using System.Threading.Tasks;
 
+	/// <summary>
+	/// Service for save file in local storage.
+	/// </summary>
 	public class LocalFileStorageService : IFileStorageService
 	{
 		#region Private Fields
