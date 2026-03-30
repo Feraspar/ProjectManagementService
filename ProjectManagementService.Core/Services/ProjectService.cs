@@ -156,7 +156,7 @@
 		/// <inheritdoc />
 		public async Task<ProjectDetailsResponse> GetByIdAsync(Guid projectId, CancellationToken cancellationToken = default)
 		{
-			Project? project = await _projectRepository.GetByIdAsync(projectId, cancellationToken);
+			Project? project = await _projectRepository.GetByIdWithDetailsAsync(projectId, cancellationToken);
 
 			if (project == null)
 			{
