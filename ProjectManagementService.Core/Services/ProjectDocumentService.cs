@@ -27,6 +27,9 @@
 		/// </summary>
 		private readonly IProjectRepository _projectRepository;
 
+		/// <summary>
+		/// Service for save file in local storage.
+		/// </summary>
 		private readonly IFileStorageService _fileStorageService;
 
 		#endregion Private Fields
