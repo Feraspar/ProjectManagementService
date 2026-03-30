@@ -8,11 +8,28 @@
 	[Route("api/[controller]")]
 	public class ProjectsController : ControllerBase
 	{
+		#region Private Fields
+
 		private readonly IProjectService _projectService;
+
+		#endregion Private Fields
+
+		#region Public Constructors
 
 		public ProjectsController(IProjectService projectService)
 		{
 			_projectService = projectService;
+		}
+
+		#endregion Public Constructors
+
+		#region Public Methods
+
+		[HttpPost("{projectId:guid}/employees/{employeeId:guid}")]
+		public async Task<IActionResult> AddEmployee(Guid projectId, Guid employeeId, CancellationToken cancellationToken)
+		{
+			await _projectService.AddEmployeeAsync(projectId, employeeId, cancellationToken);
+			return NoContent();
 		}
 
 		[HttpPost]
@@ -21,6 +38,13 @@
 			var project = await _projectService.CreateAsync(request, cancellationToken);
 
 			return CreatedAtAction(nameof(GetById), new { projectId = project.Id }, project);
+		}
+
+		[HttpDelete("{projectId:guid}")]
+		public async Task<IActionResult> Delete(Guid projectId, CancellationToken cancellationToken)
+		{
+			await _projectService.DeleteAsync(projectId, cancellationToken);
+			return NoContent();
 		}
 
 		[HttpGet]
@@ -37,6 +61,13 @@
 			return Ok(project);
 		}
 
+		[HttpDelete("{projectId:guid}/employees/{employeeId:guid}")]
+		public async Task<IActionResult> RemoveEmployee(Guid projectId, Guid employeeId, CancellationToken cancellationToken)
+		{
+			await _projectService.RemoveEmployeeAsync(projectId, employeeId, cancellationToken);
+			return NoContent();
+		}
+
 		[HttpPut("{projectId:guid}")]
 		public async Task<IActionResult> Update(Guid projectId, [FromBody] UpdateProjectRequest request, CancellationToken cancellationToken)
 		{
@@ -44,25 +75,6 @@
 			return Ok(project);
 		}
 
-		[HttpDelete("{projectId:guid}")]
-		public async Task<IActionResult> Delete(Guid projectId, CancellationToken cancellationToken)
-		{
-			await _projectService.DeleteAsync(projectId, cancellationToken);
-			return NoContent();
-		}
-
-		[HttpPost("{projectId:guid}/employees/{employeeId:guid}")]
-		public async Task<IActionResult> AddEmployee(Guid projectId, Guid employeeId, CancellationToken cancellationToken)
-		{
-			await _projectService.AddEmployeeAsync(projectId, employeeId, cancellationToken);
-			return NoContent();
-		}
-
-		[HttpDelete("{projectId:guid}/employees/{employeeId:guid}")]
-		public async Task<IActionResult> RemoveEmployee(Guid projectId, Guid employeeId, CancellationToken cancellationToken)
-		{
-			await _projectService.RemoveEmployeeAsync(projectId, employeeId, cancellationToken);
-			return NoContent();
-		}
+		#endregion Public Methods
 	}
 }
