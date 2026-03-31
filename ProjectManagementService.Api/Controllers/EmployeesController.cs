@@ -33,9 +33,7 @@
 		}
 
 		[HttpDelete("{employeeId:guid}")]
-		public async Task<IActionResult> Delete(
-			Guid employeeId,
-			CancellationToken cancellationToken)
+		public async Task<IActionResult> Delete(Guid employeeId, CancellationToken cancellationToken)
 		{
 			await _employeeService.DeleteAsync(employeeId, cancellationToken);
 			return NoContent();

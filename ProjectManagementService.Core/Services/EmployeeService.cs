@@ -21,6 +21,11 @@
 		/// </summary>
 		private readonly IEmployeeRepository _employeeRepository;
 
+		/// <summary>
+		/// Project repository.
+		/// </summary>
+		private readonly IProjectRepository _projectRepository;
+
 		#endregion Private Fields
 
 		#region Public Constructors
@@ -29,9 +34,10 @@
 		/// Class constructor.
 		/// </summary>
 		/// <param name="employeeRepository">Employee repository.</param>
-		public EmployeeService(IEmployeeRepository employeeRepository)
+		public EmployeeService(IEmployeeRepository employeeRepository, IProjectRepository projectRepository)
 		{
 			_employeeRepository = employeeRepository;
+			_projectRepository = projectRepository;
 		}
 
 		#endregion Public Constructors
@@ -67,6 +73,13 @@
 			if (employee is null)
 			{
 				throw new KeyNotFoundException($"Employee with id '{employeeId}' was not found.");
+			}
+
+			IReadOnlyCollection<Project> managedProjects = await _projectRepository.GetAllAsync(new FiltredProjectsRequest(ProjectManagerId: employeeId), cancellationToken);
+
+			if (managedProjects.Count > 0)
+			{
+				throw new InvalidOperationException("Employee can't be deleted because they are assigned as a project manager.");
 			}
 
 			await _employeeRepository.DeleteAsync(employee, cancellationToken);

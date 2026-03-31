@@ -81,7 +81,8 @@
 
 			if (request.StartDateTo.HasValue)
 			{
-				query = query.Where(x => x.StartDate <= request.StartDateTo.Value);
+				DateTime normilizedStartDateTo = request.StartDateTo.Value.Date.AddDays(1).AddTicks(-1);
+				query = query.Where(x => x.StartDate <= normilizedStartDateTo);
 			}
 
 			if (!string.IsNullOrWhiteSpace(request.CustomerCompanyName))

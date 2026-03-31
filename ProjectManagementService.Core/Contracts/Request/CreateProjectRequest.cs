@@ -23,9 +23,9 @@
 
 		Guid ProjectManagerId,
 
-		DateTimeOffset StartDate,
+		DateTime StartDate,
 
-		DateTimeOffset EndDate,
+		DateTime EndDate,
 
 		ProjectPriority Priority,
 
