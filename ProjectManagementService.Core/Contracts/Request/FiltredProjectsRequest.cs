@@ -15,9 +15,9 @@
 	/// <param name="SortDescending">Indicates whether sorting should be descending.</param>
 	public record FiltredProjectsRequest(
 
-		DateTimeOffset? StartDateFrom = null,
+		DateTime? StartDateFrom = null,
 
-		DateTimeOffset? StartDateTo = null,
+		DateTime? StartDateTo = null,
 
 		IReadOnlyCollection<ProjectPriority>? Priorities = null,
 

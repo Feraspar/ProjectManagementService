@@ -38,12 +38,12 @@
 		/// <summary>
 		/// Project start time.
 		/// </summary>
-		public DateTimeOffset StartDate { get; set; }
+		public DateTime StartDate { get; set; }
 
 		/// <summary>
 		/// Project end time.
 		/// </summary>
-		public DateTimeOffset EndDate { get; set; }
+		public DateTime EndDate { get; set; }
 
 		/// <summary>
 		/// Project priority.
