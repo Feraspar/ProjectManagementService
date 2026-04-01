@@ -185,7 +185,7 @@
 
 			if (project.ProjectManagerId == employeeId)
 			{
-				throw new InvalidOperationException("The project manager cannot be removed from the project team.");
+				throw new InvalidOperationException("The project manager can't be removed from the project team.");
 			}
 
 			await _projectRepository.RemoveEmployeeAsync(projectId, employeeId, cancellationToken);
