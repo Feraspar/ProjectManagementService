@@ -34,7 +34,7 @@
 		[Fact]
 		public async Task CreateAsync_ValidRequest_ReturnsCorrectResponse()
 		{
-			/// Arrange
+			// Arrange
 			var request = new CreateEmployeeRequest
 			(
 				FirstName: "John",
@@ -53,16 +53,16 @@
 			};
 
 			_employeeRepositoryMock.Setup(x => x.IsEmailUniqueAsync(request.Email, null, It.IsAny<CancellationToken>())).ReturnsAsync(true);
-			_employeeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Employee>(), It.IsAny<CancellationToken>())).ReturnsAsync(employee);
+			_employeeRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Employee>(), It.IsAny<CancellationToken>())).ReturnsAsync((Employee e, CancellationToken _) => e);
 
-			/// Act
+			// Act
 			var result = await _sut.CreateAsync(request);
 
-			/// Assert
+			// Assert
 			Assert.NotNull(result);
-			Assert.Equal("John", result.FirstName);
-			Assert.Equal("Smith", result.LastName);
-			Assert.Equal("John@company.mail", result.Email);
+			Assert.Equal(request.FirstName, result.FirstName);
+			Assert.Equal(request.LastName, result.LastName);
+			Assert.Equal(request.Email, result.Email);
 			Assert.Equal("Smith John", result.FullName);
 
 			_employeeRepositoryMock.Verify(x => x.AddAsync(It.Is<Employee>(e => e.FirstName == "John" && e.LastName == "Smith" && e.Email == "John@company.mail"), It.IsAny<CancellationToken>()), Times.Once);
@@ -71,7 +71,7 @@
 		[Fact]
 		public async Task CreateAsync_DublicateEmail_ThrowsInvalidOperationException()
 		{
-			/// Arrange
+			// Arrange
 			var request = new CreateEmployeeRequest
 			(
 				FirstName: "John",
@@ -82,10 +82,10 @@
 
 			_employeeRepositoryMock.Setup(x => x.IsEmailUniqueAsync(request.Email, null, It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
-			/// Act
+			// Act
 			var action = async () => await _sut.CreateAsync(request);
 
-			/// Assert
+			// Assert
 			var exception = await Assert.ThrowsAsync<InvalidOperationException>(action);
 			Assert.Equal("Employee email must be unique.", exception.Message);
 
@@ -95,7 +95,7 @@
 		[Fact]
 		public async Task DeleteAsync_EmployeeIsProjectManager_ThrowsInvalidOperationException()
 		{
-			/// Arrange
+			// Arrange
 			var employee = new Employee
 			{
 				Id = Guid.NewGuid(),
@@ -120,10 +120,10 @@
 				}
 			});
 
-			/// Act
+			// Act
 			var action = async () => await _sut.DeleteAsync(employee.Id);
 
-			/// Assert
+			// Assert
 			var exception = await Assert.ThrowsAsync<InvalidOperationException>(action);
 			Assert.Equal("Employee can't be deleted because they are assigned as a project manager.", exception.Message);
 
